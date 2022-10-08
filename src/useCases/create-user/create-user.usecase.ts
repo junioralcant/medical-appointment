@@ -1,4 +1,5 @@
 import { User } from '../../entities/user.entity';
+import { ParameterRequiredError } from '../../erros/parameter-required.error';
 import { UserRepository } from '../../repositories/user.repository';
 
 type UserRequest = {
@@ -14,7 +15,10 @@ export class CreateUserUseCase {
     const user = User.create(data);
 
     if (!data.username || !data.password) {
-      throw new Error('Usernam/password is required');
+      throw new ParameterRequiredError(
+        'Usernam/password is required',
+        422
+      );
     }
 
     const existUser = await userRepository.findByUsername(
@@ -22,7 +26,7 @@ export class CreateUserUseCase {
     );
 
     if (existUser) {
-      throw new Error('User already exists');
+      throw new ParameterRequiredError('User already exists', 409);
     }
 
     const userCreated = await userRepository.save(user);
