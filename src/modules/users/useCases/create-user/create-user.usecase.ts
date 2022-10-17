@@ -1,6 +1,6 @@
+import { ParameterRequiredError } from '../../../../erros/parameter-required.error';
 import { User } from '../../entities/user.entity';
-import { ParameterRequiredError } from '../../erros/parameter-required.error';
-import { UserRepository } from '../../repositories/user.repository';
+import { IUserRepository } from '../../repositories/user.repository';
 
 type UserRequest = {
   name: string;
@@ -9,9 +9,9 @@ type UserRequest = {
 };
 
 export class CreateUserUseCase {
-  async execute(data: UserRequest) {
-    const userRepository = UserRepository.getInstance();
+  constructor(private userRepository: IUserRepository) {}
 
+  async execute(data: UserRequest) {
     const user = User.create(data);
 
     if (!data.username || !data.password) {
@@ -21,7 +21,7 @@ export class CreateUserUseCase {
       );
     }
 
-    const existUser = await userRepository.findByUsername(
+    const existUser = await this.userRepository.findByUsername(
       data.username
     );
 
@@ -29,7 +29,7 @@ export class CreateUserUseCase {
       throw new ParameterRequiredError('User already exists', 409);
     }
 
-    const userCreated = await userRepository.save(user);
+    const userCreated = await this.userRepository.save(user);
 
     return userCreated;
   }
