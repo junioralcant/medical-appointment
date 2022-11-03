@@ -4,5 +4,77 @@
         "title": "Serviço de agendamento de consulta",
         "description": "Essa API é responsável pelo agendamento de consulta",
         "version": "1.0.0"
+    },
+    "paths": {
+        "/specialities": {
+            "post": {
+                "tags": ["Speciality"],
+                "description": "Cadastro de especialidade",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SpecialityRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SpecialityResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } 
+    },
+    "components": {
+        "schemas": {
+            "SpecialityRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Nome da especialidade",
+                        "example": "NOME_TEST"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Descrição da especialidade",
+                        "example": "DESCRIPTION_TEST"
+                    }
+                }
+            },
+            "SpecialityResponse": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Nome da especialidade",
+                        "example": "NOME_TEST"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Descrição da especialidade",
+                        "example": "DESCRIPTION_TEST"
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "Id da especialidada cadastrada",
+                        "format": "uuid"
+                    },
+                    "createAt": {
+                        "type": "string",
+                        "description": "Data de criação da especialidade",
+                        "format": "date-time"
+                    }
+                }
+            }
+        }
     }
 }
