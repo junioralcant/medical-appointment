@@ -1,5 +1,6 @@
 import { CustomError } from '../../../../erros/custom.error';
 import { IPasswordCrypto } from '../../../../infra/shared/crypto/password.crypto';
+import { IToken } from '../../../../infra/shared/token/token';
 import { IUserRepository } from '../../repositories/user.repository';
 type AuthenticateRequest = {
   username: string;
@@ -9,7 +10,8 @@ type AuthenticateRequest = {
 export class AuthenticateUserUseCase {
   constructor(
     private userRepository: IUserRepository,
-    private passwordCrypto: IPasswordCrypto
+    private passwordCrypto: IPasswordCrypto,
+    private token: IToken
   ) {}
 
   async execute({ username, password }: AuthenticateRequest) {
@@ -32,6 +34,8 @@ export class AuthenticateUserUseCase {
       throw new CustomError('Username/password incorrect', 401);
     }
 
-    return user;
+    const token = this.token.create(user);
+
+    return { token };
   }
 }

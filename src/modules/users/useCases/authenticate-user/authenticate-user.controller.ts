@@ -1,12 +1,14 @@
 import { Request, Response } from 'express';
 import { IPasswordCrypto } from '../../../../infra/shared/crypto/password.crypto';
+import { IToken } from '../../../../infra/shared/token/token';
 import { IUserRepository } from '../../repositories/user.repository';
 import { AuthenticateUserUseCase } from './authenticate-user.usecase';
 
 export class AuthenticateUserController {
   constructor(
     private userRepository: IUserRepository,
-    private passwordCrypt: IPasswordCrypto
+    private passwordCrypt: IPasswordCrypto,
+    private token: IToken
   ) {}
   async handle(request: Request, response: Response) {
     try {
@@ -14,7 +16,8 @@ export class AuthenticateUserController {
 
       const authenticateUserUseCase = new AuthenticateUserUseCase(
         this.userRepository,
-        this.passwordCrypt
+        this.passwordCrypt,
+        this.token
       );
 
       const result = await authenticateUserUseCase.execute(data);
