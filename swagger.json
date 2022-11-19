@@ -9,6 +9,11 @@
         "/specialities": {
             "post": {
                 "tags": ["Speciality"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "Cadastro de especialidade",
                 "requestBody": {
                     "content": {
@@ -34,8 +39,8 @@
         },
         "/login": {
             "post": { 
-                "description": "Autenticação de usuário",
                 "tags": ["Users"],
+                "description": "Autenticação de usuário",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -112,6 +117,15 @@
                         "example": "PASSWORD_TEST"
                     }
                 }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "description": "Autenticação da API",
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "tokenUrl": "http://localhost:3333/login"
             }
         }
     }
