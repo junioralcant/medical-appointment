@@ -1,12 +1,14 @@
 import { Router } from 'express';
-import { ensureAuthenticate } from '../infra/shared/http/middleware/ensure-authenticate.middleware';
 import { createSpecialityController } from '../modules/speciality/useCases/create-speciality';
+import { ensureAuthenticate } from '../infra/shared/http/middleware/ensure-authenticate.middleware';
+import { ensureAdmin } from '../infra/shared/http/middleware/ensure-admin.middleware';
 
 const specialityRouter = Router();
 
 specialityRouter.post(
   '/specialities',
   ensureAuthenticate,
+  ensureAdmin,
   (req, res) => {
     createSpecialityController.handle(req, res);
   }

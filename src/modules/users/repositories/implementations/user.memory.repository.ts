@@ -26,4 +26,10 @@ export class UserMemoryRepository implements IUserRepository {
     this.users.push(date);
     return date;
   }
+
+  async findById(id: string): Promise<User | undefined> {
+    return this.users.find((user) => user.id === id) as
+      | User
+      | undefined;
+  }
 }

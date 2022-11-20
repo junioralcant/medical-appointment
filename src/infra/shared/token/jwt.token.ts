@@ -2,7 +2,7 @@ import { createHmac } from 'crypto';
 import { sign, verify } from 'jsonwebtoken';
 
 import { User } from '../../../modules/users/entities/user.entity';
-import { IToken } from './token';
+import { IToken, TokenUser } from './token';
 
 export class JWTToken implements IToken {
   private TOKEN_SECRET = process.env.SECRET_KEY_TOKEN || '';
@@ -24,19 +24,19 @@ export class JWTToken implements IToken {
       this.TOKEN_SECRET_CRYPTO,
       {
         subject: id,
-        expiresIn: '1m',
+        expiresIn: '15m',
       }
     );
 
     return token;
   }
 
-  validate(token: string): boolean {
+  validate(token: string): TokenUser | null {
     try {
-      verify(token, this.TOKEN_SECRET_CRYPTO);
-      return true;
+      const tokenUser = verify(token, this.TOKEN_SECRET_CRYPTO);
+      return tokenUser as TokenUser;
     } catch (error) {
-      return false;
+      return null;
     }
   }
 }

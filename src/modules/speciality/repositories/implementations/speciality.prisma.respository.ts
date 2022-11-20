@@ -20,4 +20,14 @@ export class SpecialityPrismaRepository
 
     return speciality;
   }
+
+  findByName(name: string): Promise<Speciality | null> {
+    const speciality = prismaClient.speciality.findUnique({
+      where: {
+        name: name,
+      },
+    });
+
+    return speciality;
+  }
 }
